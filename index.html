@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>앱 다운로드 · lampbaba</title>
+<style>
+  :root {
+    --bg: #0f1115; --card: #171a21; --border: #262b36; --fg: #e7ebf2;
+    --muted: #9aa3b2; --accent: #3b82f6; --accent-fg: #fff;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f6fa; --card: #ffffff; --border: #e2e6ee; --fg: #14171d;
+      --muted: #5b6472; --accent: #2563eb; --accent-fg: #fff;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", sans-serif;
+    -webkit-font-smoothing: antialiased; line-height: 1.5;
+  }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 40px 20px 64px; }
+  header { text-align: center; margin-bottom: 32px; }
+  header h1 { margin: 0 0 6px; font-size: 26px; letter-spacing: -0.02em; }
+  header p { margin: 0; color: var(--muted); font-size: 15px; }
+  .apps { display: grid; gap: 18px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; display: flex; gap: 20px; align-items: center;
+  }
+  .qr {
+    flex: 0 0 auto; width: 116px; height: 116px; border-radius: 10px;
+    background: #fff; padding: 8px; image-rendering: pixelated;
+  }
+  .qr img { width: 100%; height: 100%; display: block; }
+  .meta { flex: 1 1 auto; min-width: 0; }
+  .meta h2 { margin: 0 0 4px; font-size: 19px; }
+  .meta .desc { margin: 0 0 14px; color: var(--muted); font-size: 14px; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px; text-decoration: none;
+    background: var(--accent); color: var(--accent-fg); font-weight: 600; font-size: 15px;
+    padding: 10px 18px; border-radius: 10px; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .9; }
+  .hint { color: var(--muted); font-size: 12px; margin-top: 8px; }
+  footer { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 36px; line-height: 1.7; }
+  @media (max-width: 480px) {
+    .card { flex-direction: column; text-align: center; }
+    .meta { min-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>📱 테스트 앱 다운로드</h1>
+    <p>QR을 찍거나 버튼을 눌러 최신 테스트 빌드를 설치하세요.</p>
+  </header>
+
+  <div class="apps" id="apps"></div>
+
+  <footer>
+    이 페이지의 앱은 개발/테스트 빌드입니다. 설치 시 <b>“출처를 알 수 없는 앱”</b> 허용이 필요할 수 있습니다.<br>
+    소스는 각 프로젝트의 비공개 저장소에 있습니다 · <a href="https://github.com/lampbaba/app-releases" style="color:inherit">app-releases</a>
+  </footer>
+</div>
+
+<script>
+  // 새 앱 추가: 여기에 한 줄 추가 + <slug>-qr.png 커밋하면 끝.
+  const APPS = [
+    {
+      slug: "vpnpilot",
+      name: "VPNPilot",
+      desc: "VPN 매니저 — IKEv2 다중 서버 연결·전환·실속도 벤치마크",
+      url: "https://github.com/lampbaba/app-releases/releases/download/vpnpilot/vpnpilot.apk",
+    },
+    // { slug: "shuai", name: "Shuai", desc: "…", url: "…/releases/download/shuai/shuai.apk" },
+  ];
+
+  const root = document.getElementById("apps");
+  for (const a of APPS) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="qr"><img src="${a.slug}-qr.png" alt="${a.name} QR" loading="lazy"></div>
+      <div class="meta">
+        <h2>${a.name}</h2>
+        <p class="desc">${a.desc}</p>
+        <a class="btn" href="${a.url}">⬇️ APK 다운로드</a>
+        <div class="hint">항상 최신 빌드로 연결됩니다.</div>
+      </div>`;
+    root.appendChild(card);
+  }
+</script>
+</body>
+</html>
